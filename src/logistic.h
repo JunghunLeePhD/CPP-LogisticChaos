@@ -9,6 +9,4 @@ inline auto make_logistic_map(double r) {
     };
 }
 
-std::vector<double> get_orbit(double r, double x0, int iterations, int skip_transient = 0);
-
 #endif
