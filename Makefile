@@ -5,7 +5,8 @@ APP_SRC  = src/main.cpp
 
 LIB_SRCS = lib/logistic.cpp \
            lib/composition.cpp \
-           lib/plotter.cpp
+           lib/plotter.cpp \
+           lib/animator.cpp
 
 SRCS = $(APP_SRC) $(LIB_SRCS)
 
