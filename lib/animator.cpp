@@ -77,15 +77,12 @@ void OrbitAnimator::run_strip_sweep(double r_start, double r_end, int total_fram
         double t = static_cast<double>(i) / (total_frames - 1);
         double r = r_start + t * (r_end - r_start);
 
-        // 1. Generate Logic
         auto map_func = mapFactory(r);
         auto orbit = get_orbit(map_func, x0, iterations);
 
         std::stringstream ss;
         ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
 
-        // 2. Visualization
-        // We reuse 'diagColor' for the baseline color to keep configuration simple
         PlotCanvas(width, height)
             .fill_background(bgColor)
             .draw_baseline(height / 2, diagColor) 
@@ -98,4 +95,39 @@ void OrbitAnimator::run_strip_sweep(double r_start, double r_end, int total_fram
         }
     }
     std::cout << "\nStrip Animation Complete." << std::endl;
+}
+
+void OrbitAnimator::run_bifurcation_growth(double r_start, double r_end, const std::string& output_folder) {
+    std::cout << "Starting Bifurcation Growth in: " << output_folder << std::endl;
+    std::string cmd = "mkdir -p " + output_folder;
+    system(cmd.c_str());
+
+    PlotCanvas canvas(width, height);
+    canvas.fill_background(bgColor);
+
+    int total_rows = height;
+
+    for (int i = 0; i < total_rows; ++i) {
+        double t = static_cast<double>(i) / (total_rows - 1);
+        double r = r_start + t * (r_end - r_start);
+
+        int y_pixel = canvas.to_screen_y(t); 
+
+        auto map_func = mapFactory(r);
+        auto orbit = get_orbit(map_func, x0, iterations);
+
+        Color c = Color::lerp(webStart, webEnd, t);
+
+        canvas.draw_row_at(y_pixel, orbit, c);
+
+        std::stringstream ss;
+        ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
+        canvas.save(ss.str());
+
+        if (i % 20 == 0) {
+            int pct = (i * 100) / total_rows;
+            std::cout << "Rendering: " << pct << "% (r=" << r << ")\r" << std::flush;
+        }
+    }
+    std::cout << "\nGrowth Animation Complete." << std::endl;
 }
