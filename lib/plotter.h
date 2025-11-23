@@ -31,15 +31,17 @@ private:
     void draw_block_raw(int x, int y, int w, int h, const Color& c);
 
     int to_screen_x(double val) const;
-    int to_screen_y(double val) const;
 
 public:
     PlotCanvas(int w, int h);
+
+    int to_screen_y(double val) const;
 
     PlotCanvas& fill_background(const Color& c);
     PlotCanvas& draw_diagonal(const Color& c);
     PlotCanvas& draw_function(std::function<double(double)> func, const Color& c);
     PlotCanvas& draw_baseline(int y_pos, const Color& c);
+    PlotCanvas& draw_row_at(int y_pixel, const std::vector<double>& orbit, const Color& c);
 
     PlotCanvas& draw_strip(const std::vector<double>& orbit, const Color& startC, const Color& endC);
 

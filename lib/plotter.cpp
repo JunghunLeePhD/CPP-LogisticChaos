@@ -88,6 +88,21 @@ PlotCanvas& PlotCanvas::draw_baseline(int y_pos, const Color& c) {
     return *this;
 }
 
+PlotCanvas& PlotCanvas::draw_row_at(int y_pixel, const std::vector<double>& orbit, const Color& c) {
+    if (y_pixel < 0 || y_pixel >= height) return *this;
+
+    for (double val : orbit) {
+        if (val < 0.0 || val > 1.0) continue;
+        
+        int x = to_screen_x(val);
+        
+        if (x >= 0 && x < width) {
+            set_pixel(x, y_pixel, c);
+        }
+    }
+    return *this;
+}
+
 PlotCanvas& PlotCanvas::draw_strip(const std::vector<double>& orbit, const Color& startC, const Color& endC) {
     int centerY = height / 2;
     size_t total = orbit.size();
