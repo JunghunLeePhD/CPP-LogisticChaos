@@ -1,19 +1,23 @@
 #include <iostream>
 #include <vector>
+#include <string> 
 #include "logistic.h"
 #include "plotter.h"
 
 int main() {
-    double r = 3.9; 
-    double x0 = 0.5;
+    double r = 3.9;       
+    double x0 = 0.5;      
     int iterations = 100; 
 
-    std::cout << "Generating orbit..." << std::endl;
+    std::cout << "Calculating orbit..." << std::endl;
     std::vector<double> orbit = get_orbit(r, x0, iterations);
 
-    save_orbit_image("output/orbit.ppm", orbit, 1000, 100);
-    save_cobweb_plot("output/cobweb.ppm", orbit, r, 800, 800);
+    system("mkdir -p output/cobweb_frames");
 
-    std::cout << "Done!" << std::endl;
+    save_cobweb_animation("output/cobweb_frames", orbit, r, 800, 800);
+
+    std::cout << "\nTo create the video, run:\n";
+    std::cout << "ffmpeg -framerate 10 -i output/cobweb_frames/cobweb_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb.mp4\n";
+
     return 0;
 }
