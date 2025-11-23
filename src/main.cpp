@@ -1,15 +1,16 @@
 #include <iostream>
 #include <vector>
 #include "logistic.h"
+#include "composition.h"
 
 int main() {
-    std::vector<double> result = get_orbit(3.9, 0.5, 100);
+    std::function<double(double)> f = [](double x) { return 2.0 * x; };
 
-    std::cout << "Orbit values: ";
-    for (double val : result) {
-        std::cout << val << " ";
-    }
-    std::cout << std::endl;
+    auto f0 = power_func(f, 0);
+    std::cout << "f^0(5) = " << f0(5) << std::endl;
+
+    auto f3 = power_func(f, 3);
+    std::cout << "f^3(5) = " << f3(5) << std::endl;
 
     return 0;
 }
