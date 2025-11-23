@@ -128,3 +128,83 @@ void save_orbit_animation(const std::string& folder, const std::vector<double>& 
     
     std::cout << "Animation frames generation complete." << std::endl;
 }
+
+void draw_line(std::vector<unsigned char>& pixels, int width, int height, 
+               int x0, int y0, int x1, int y1, const Color& c) {
+    
+    auto set_pixel_unsafe = [&](int x, int y) {
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+            int idx = (y * width + x) * 3;
+            pixels[idx] = c.r; pixels[idx+1] = c.g; pixels[idx+2] = c.b;
+        }
+    };
+
+    int dx = std::abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    int dy = -std::abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy, e2;
+
+    while (true) {
+        set_pixel_unsafe(x0, y0);
+        if (x0 == x1 && y0 == y1) break;
+        e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+}
+
+void save_cobweb_plot(const std::string& filename, const std::vector<double>& orbit, double r, int width, int height) {
+    std::vector<unsigned char> pixels(width * height * 3);
+    std::fill(pixels.begin(), pixels.end(), 0); // Black background
+
+    auto to_screen_x = [&](double val) { return static_cast<int>(val * (width - 1)); };
+    auto to_screen_y = [&](double val) { return height - 1 - static_cast<int>(val * (height - 1)); };
+
+    Color diagColor(100, 100, 100);
+    draw_line(pixels, width, height, 
+              to_screen_x(0), to_screen_y(0), 
+              to_screen_x(1), to_screen_y(1), diagColor);
+
+    Color curveColor(255, 255, 255);
+    int prev_px = to_screen_x(0);
+    int prev_py = to_screen_y(0);
+    
+    for (int i = 1; i < width; ++i) {
+        double x = static_cast<double>(i) / width;
+        double y = r * x * (1.0 - x); 
+        
+        int px = to_screen_x(x);
+        int py = to_screen_y(y);
+        
+        draw_line(pixels, width, height, prev_px, prev_py, px, py, curveColor);
+        prev_px = px; prev_py = py;
+    }
+
+    const Color startC(170, 220, 255);
+    const Color endC(255, 215, 0);
+
+    double curr_x = orbit[0]; 
+    
+    for (size_t i = 0; i < orbit.size() - 1; ++i) {
+        double next_x = orbit[i+1]; 
+
+        double t = (double)i / (orbit.size() - 1);
+        Color c = Color::lerp(startC, endC, t);
+
+
+        int ax = to_screen_x(curr_x);
+        int ay = to_screen_y(curr_x);
+        
+        int bx = to_screen_x(curr_x);
+        int by = to_screen_y(next_x);
+        
+        int cx = to_screen_x(next_x);
+        int cy = to_screen_y(next_x);
+
+        draw_line(pixels, width, height, ax, ay, bx, by, c);
+        draw_line(pixels, width, height, bx, by, cx, cy, c);
+
+        curr_x = next_x;
+    }
+
+    save_ppm(filename, pixels, width, height);
+}
