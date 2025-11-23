@@ -31,4 +31,4 @@ Release/
 *.swp
 .DS_Store
 
-run_orbit
+output
