@@ -31,23 +31,24 @@ int main() {
         .draw_function(logistic, white)
         .animate_cobweb("output/frames_cobweb", orbit, blue, gold);
     
+    int ITERATIONS = 300;
     OrbitAnimator(800, 800)
         .set_background_color(black)
         .set_diagonal_color(gray)
         .set_function_color(white)
         .set_web_colors(blue, gold)
         .set_map_factory(make_logistic_map)
-        .set_iterations(150)
         .set_start_x(0.5)
+        .set_iterations(ITERATIONS)
         .run_cobweb_sweep(1.0, 4.0, 1200, "output/frames_cobweb_sweep");
 
     OrbitAnimator(800, 800)
-        .set_map_factory(make_logistic_map)
-        .set_start_x(0.5)
-        .set_iterations(150)
         .set_background_color(black)
         .set_diagonal_color(gray)
         .set_web_colors(blue, gold)
+        .set_map_factory(make_logistic_map)
+        .set_start_x(0.5)
+        .set_iterations(ITERATIONS)
         .run_strip_sweep(1.0, 4.0, 1200, "output/frames_strip_sweep");;
 
     OrbitAnimator(800, 800)
