@@ -208,3 +208,66 @@ void save_cobweb_plot(const std::string& filename, const std::vector<double>& or
 
     save_ppm(filename, pixels, width, height);
 }
+
+void save_cobweb_animation(const std::string& folder, const std::vector<double>& orbit, double r, int width, int height) {
+    std::vector<unsigned char> pixels(width * height * 3);
+    std::fill(pixels.begin(), pixels.end(), 0); // Black Background
+
+    auto to_screen_x = [&](double val) { return static_cast<int>(val * (width - 1)); };
+    auto to_screen_y = [&](double val) { return height - 1 - static_cast<int>(val * (height - 1)); };
+
+    Color diagColor(80, 80, 80);
+    draw_line(pixels, width, height, 
+              to_screen_x(0), to_screen_y(0), 
+              to_screen_x(1), to_screen_y(1), diagColor);
+
+    Color curveColor(255, 255, 255);
+    int prev_px = to_screen_x(0);
+    int prev_py = to_screen_y(0);
+    
+    for (int i = 1; i < width; ++i) {
+        double x = static_cast<double>(i) / width;
+        double y = r * x * (1.0 - x);
+        
+        int px = to_screen_x(x);
+        int py = to_screen_y(y);
+        
+        draw_line(pixels, width, height, prev_px, prev_py, px, py, curveColor);
+        prev_px = px; prev_py = py;
+    }
+
+    const Color startC(170, 220, 255); // Light Blue
+    const Color endC(255, 215, 0);     // Gold
+    
+    double curr_x = orbit[0];
+
+    std::cout << "Generating Cobweb Animation in '" << folder << "'..." << std::endl;
+
+    for (size_t i = 0; i < orbit.size() - 1; ++i) {
+        double next_x = orbit[i+1];
+
+        double t = (double)i / (orbit.size() - 1);
+        Color c = Color::lerp(startC, endC, t);
+
+        int ax = to_screen_x(curr_x);
+        int ay = to_screen_y(curr_x); // Start on Diagonal
+        
+        int bx = to_screen_x(curr_x);
+        int by = to_screen_y(next_x); // Hit the Curve (Vertical)
+        
+        int cx = to_screen_x(next_x);
+        int cy = to_screen_y(next_x); // Return to Diagonal (Horizontal)
+
+        draw_line(pixels, width, height, ax, ay, bx, by, c);
+        
+        draw_line(pixels, width, height, bx, by, cx, cy, c);
+
+        curr_x = next_x;
+
+        std::stringstream ss;
+        ss << folder << "/cobweb_" << std::setfill('0') << std::setw(4) << i << ".ppm";
+        save_ppm(ss.str(), pixels, width, height);
+    }
+
+    std::cout << "Cobweb animation complete." << std::endl;
+}
