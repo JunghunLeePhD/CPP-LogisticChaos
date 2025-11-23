@@ -25,4 +25,6 @@ void save_orbit_image(const std::string& filename, const std::vector<double>& or
 
 void save_orbit_animation(const std::string& folder, const std::vector<double>& orbit, int width, int height);
 
+void save_cobweb_plot(const std::string& filename, const std::vector<double>& orbit, double r, int width, int height);
+
 #endif
