@@ -1,10 +1,13 @@
 CXX      = g++
-CXXFLAGS = -O3 -std=c++17
+CXXFLAGS = -O3 -std=c++17 -I./lib
 
-SRCS = src/main.cpp \
-       src/logistic.cpp \
-       src/composition.cpp \
-       src/plotter.cpp
+APP_SRC  = src/main.cpp
+
+LIB_SRCS = lib/logistic.cpp \
+           lib/composition.cpp \
+           lib/plotter.cpp
+
+SRCS = $(APP_SRC) $(LIB_SRCS)
 
 OUT_DIR = output
 TARGET  = $(OUT_DIR)/run_orbit
@@ -13,16 +16,15 @@ all: $(TARGET)
 
 $(TARGET): $(SRCS)
 	@mkdir -p $(OUT_DIR)
-	@echo "Compiling and Linking..."
+	@echo "Compiling Project..."
 	$(CXX) $(CXXFLAGS) $(SRCS) -o $(TARGET)
-	@echo "Build successful! Executable is at: $(TARGET)"
+	@echo "Done! Executable: $(TARGET)"
 
 run: all
-	@echo "Running program..."
+	@echo "Running..."
 	./$(TARGET)
 
 clean:
-	@echo "Cleaning up..."
 	rm -rf $(OUT_DIR)
 
 .PHONY: all clean run
