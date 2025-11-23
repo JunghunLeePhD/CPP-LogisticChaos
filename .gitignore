@@ -32,3 +32,4 @@ Release/
 .DS_Store
 
 output
+*.ppm
