@@ -1,24 +1,22 @@
 #include <iostream>
 #include <vector>
-#include <iomanip>
+#include <string>
 #include "logistic.h"
-// Include the new header
-#include "plotter.h" 
+#include "plotter.h"
 
 int main() {
-    double r_chaos = 3.9;
-    double r_stable = 2.9;
+    double r = 3.9;
     double x0 = 0.5;
-    int iterations = 50;
+    int iterations = 200; 
+    
+    std::cout << "Calculating orbit..." << std::endl;
+    std::vector<double> orbit = get_orbit(r, x0, iterations);
 
-    int skip = 0; 
+    system("mkdir -p output/frames");
+    save_orbit_animation("output/frames", orbit, 800, 50);
 
-    std::cout << "Generating chaotic orbit (r=" << r_chaos << ")..." << std::endl;
-    std::vector<double> chaos_orbit = get_orbit(r_chaos, x0, iterations, skip);
-
-    save_orbit_image("chaos_orbit.ppm", chaos_orbit, 1000, 4);
-
-    std::cout << "Done. Check the folder." << std::endl;
+    std::cout << "\nTo make a video, install ffmpeg and run:" << std::endl;
+    std::cout << "ffmpeg -framerate 30 -i output/frames/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/orbit_video.mp4" << std::endl;
 
     return 0;
 }

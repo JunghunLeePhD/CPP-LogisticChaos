@@ -23,4 +23,6 @@ bool save_ppm(const std::string& filename, const std::vector<unsigned char>& pix
 
 void save_orbit_image(const std::string& filename, const std::vector<double>& orbit, int width, int height);
 
+void save_orbit_animation(const std::string& folder, const std::vector<double>& orbit, int width, int height);
+
 #endif
