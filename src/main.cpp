@@ -56,7 +56,7 @@ int main() {
         .set_map_factory(make_logistic_map)
         .set_start_x(0.5)      
         .set_iterations(ITERATIONS)   
-        .run_bifurcation_growth(1.0, 4.0, "output/frames_bifurcation_growth");
+        .run_bifurcation_growth(1.0, 4.0, 1200, "output/frames_bifurcation_growth");
 
     std::cout << "All tasks completed. \nTo create the video, run:" << std::endl;
     std::cout << "ffmpeg -framerate 10 -i output/frames_cobweb/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb.mp4" << std::endl;
