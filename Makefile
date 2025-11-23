@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -O3 -std=c++17
 
 # 2. List your source files here
-SRCS = src/main.cpp src/logistic.cpp 
+SRCS = src/main.cpp src/logistic.cpp src/composition.cpp
 
 # 3. Name your output file
 TARGET = output
