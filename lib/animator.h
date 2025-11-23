@@ -36,7 +36,9 @@ public:
     OrbitAnimator& set_function_color(const Color& c);
     OrbitAnimator& set_web_colors(const Color& start, const Color& end);
 
-    void run_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder);
+    void run_cobweb_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder);
+
+    void run_strip_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder);
 };
 
 #endif
