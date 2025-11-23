@@ -1,16 +1,28 @@
-# 1. Compiler settings
-CXX = g++
+CXX      = g++
 CXXFLAGS = -O3 -std=c++17
 
-# 2. List your source files here
-SRCS = src/main.cpp src/logistic.cpp src/composition.cpp src/plotter.cpp
+SRCS = src/main.cpp \
+       src/logistic.cpp \
+       src/composition.cpp \
+       src/plotter.cpp
 
-# 3. Name your output file
-TARGET = output
+OUT_DIR = output
+TARGET  = $(OUT_DIR)/run_orbit
 
-# 4. The build rule (Standard Magic)
-all:
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	@mkdir -p $(OUT_DIR)
+	@echo "Compiling and Linking..."
 	$(CXX) $(CXXFLAGS) $(SRCS) -o $(TARGET)
+	@echo "Build successful! Executable is at: $(TARGET)"
+
+run: all
+	@echo "Running program..."
+	./$(TARGET)
 
 clean:
-	rm -f $(TARGET)
+	@echo "Cleaning up..."
+	rm -rf $(OUT_DIR)
+
+.PHONY: all clean run
