@@ -97,7 +97,7 @@ void OrbitAnimator::run_strip_sweep(double r_start, double r_end, int total_fram
     std::cout << "\nStrip Animation Complete." << std::endl;
 }
 
-void OrbitAnimator::run_bifurcation_growth(double r_start, double r_end, const std::string& output_folder) {
+void OrbitAnimator::run_bifurcation_growth(double r_start, double r_end, int total_frames, const std::string& output_folder) {
     std::cout << "Starting Bifurcation Growth in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;
     system(cmd.c_str());
@@ -105,28 +105,36 @@ void OrbitAnimator::run_bifurcation_growth(double r_start, double r_end, const s
     PlotCanvas canvas(width, height);
     canvas.fill_background(bgColor);
 
-    int total_rows = height;
+    int rows_drawn_so_far = 0;
 
-    for (int i = 0; i < total_rows; ++i) {
-        double t = static_cast<double>(i) / (total_rows - 1);
-        double r = r_start + t * (r_end - r_start);
+    for (int frame = 0; frame < total_frames; ++frame) {
+        
+        double progress = static_cast<double>(frame + 1) / total_frames;
+        int target_row_count = static_cast<int>(progress * height);
 
-        int y_pixel = canvas.to_screen_y(t); 
+        while (rows_drawn_so_far < target_row_count && rows_drawn_so_far < height) {
+            double t = static_cast<double>(rows_drawn_so_far) / (height - 1);
+            double r = r_start + t * (r_end - r_start);
+            
+            auto map_func = mapFactory(r);
+            auto orbit = get_orbit(map_func, x0, iterations);
 
-        auto map_func = mapFactory(r);
-        auto orbit = get_orbit(map_func, x0, iterations);
+            Color c = Color::lerp(webStart, webEnd, t);
+            
+            int y_pixel = canvas.to_screen_y(t); 
+            
+            canvas.draw_row_at(y_pixel, orbit, c);
 
-        Color c = Color::lerp(webStart, webEnd, t);
-
-        canvas.draw_row_at(y_pixel, orbit, c);
+            rows_drawn_so_far++;
+        }
 
         std::stringstream ss;
-        ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
+        ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << frame << ".ppm";
         canvas.save(ss.str());
 
-        if (i % 20 == 0) {
-            int pct = (i * 100) / total_rows;
-            std::cout << "Rendering: " << pct << "% (r=" << r << ")\r" << std::flush;
+        if (frame % 10 == 0) {
+            int pct = (frame * 100) / total_frames;
+            std::cout << "Rendering: " << pct << "% (frame " << frame << ")\r" << std::flush;
         }
     }
     std::cout << "\nGrowth Animation Complete." << std::endl;
