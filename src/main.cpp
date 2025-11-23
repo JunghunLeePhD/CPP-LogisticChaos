@@ -50,11 +50,20 @@ int main() {
         .set_web_colors(blue, gold)
         .run_strip_sweep(1.0, 4.0, 1200, "output/frames_strip_sweep");;
 
+    OrbitAnimator(800, 800)
+        .set_background_color(black)
+        .set_web_colors(blue, gold) 
+        .set_map_factory(make_logistic_map)
+        .set_start_x(0.5)      
+        .set_iterations(ITERATIONS)   
+        .run_bifurcation_growth(1.0, 4.0, "output/frames_bifurcation_growth");
+
     std::cout << "All tasks completed. \nTo create the video, run:" << std::endl;
     std::cout << "ffmpeg -framerate 10 -i output/frames_cobweb/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb.mp4" << std::endl;
     std::cout << "ffmpeg -framerate 10 -i output/frames_strip/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/strip.mp4" << std::endl;
     std::cout << "ffmpeg -framerate 60 -i output/frames_cobweb_sweep/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb_sweep.mp4" << std::endl;
     std::cout << "ffmpeg -framerate 60 -i output/frames_strip_sweep/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/strip_sweep.mp4" << std::endl;
+    std::cout << "ffmpeg -framerate 60 -i output/frames_bifurcation_growth/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/bifurcation_growth.mp4" << std::endl;
 
     return 0;
 }

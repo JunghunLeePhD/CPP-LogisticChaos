@@ -39,6 +39,8 @@ public:
     void run_cobweb_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder);
 
     void run_strip_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder);
+
+    void run_bifurcation_growth(double r_start, double r_end, const std::string& output_folder);
 };
 
 #endif
