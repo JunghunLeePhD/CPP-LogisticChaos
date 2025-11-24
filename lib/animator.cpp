@@ -99,7 +99,7 @@ void OrbitAnimator::run_cobweb_sweep_initial_point(double r, int total_frames, c
     std::cout << "\nInitial Point Sweep Complete." << std::endl;
 }
 
-void OrbitAnimator::run_strip_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder) {
+void OrbitAnimator::run_strip_sweep_parameter(double r_start, double r_end, int total_frames, const std::string& output_folder) {
     std::cout << "Starting Strip Sweep Animation in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;
     system(cmd.c_str());
