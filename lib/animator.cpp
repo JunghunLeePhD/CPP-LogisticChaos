@@ -38,7 +38,7 @@ OrbitAnimator& OrbitAnimator::set_web_colors(const Color& start, const Color& en
     webStart = start; webEnd = end; return *this;
 }
 
-void OrbitAnimator::run_cobweb_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder) {
+void OrbitAnimator::run_cobweb_sweep_parameter(double r_start, double r_end, int total_frames, const std::string& output_folder) {
     std::cout << "Starting Sweep Animation in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;
     system(cmd.c_str());
