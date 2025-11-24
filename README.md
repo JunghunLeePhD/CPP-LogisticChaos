@@ -4,6 +4,26 @@
 
 This repository provides an efficient C++ implementation for generating time series data, bifurcation diagrams, and analyzing the onset of chaos in non-linear dynamical systems. It generates image frames which can be compiled into high-quality animations.
 
+## **🎥 Demos**
+
+### Tracing orbit
+![Cobweb](assets/cobweb.gif)
+
+![Strip](assets/strip.gif)
+
+### Attractors
+![Cobweb Sweep Initial Point](assets/cobweb_sweep_initial_point.gif)
+
+![Strip Sweep Initial Point](assets/strip_sweep_initial_point.gif)
+
+### Stable and Unstable parameters 
+![Cobweb Sweep Parameter](assets/cobweb_sweep_parameter.gif)
+![Bifurcation Growth](assets/bifurcation_growth.gif) 
+
+![Strip Sweep Parameter](assets/strip_sweep_parameter.gif)
+
+
+
 ## **📖 Mathematical Background**
 
 The Logistic Map is a polynomial mapping (equivalently, a recurrence relation) of degree 2, often cited as an archetypal example of how complex, chaotic behaviour can arise from very simple non-linear dynamical equations.

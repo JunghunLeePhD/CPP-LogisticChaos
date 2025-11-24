@@ -18,9 +18,9 @@ int main() {
     
     system("mkdir -p output/frames_strip");
 
-    PlotCanvas(800, 100)
+    PlotCanvas(800, 50)
         .fill_background(black)
-        .draw_baseline(50, gray)
+        .draw_baseline(25, gray)
         .animate_strip("output/frames_strip", orbit, blue, gold);
 
 
@@ -32,7 +32,7 @@ int main() {
         .animate_cobweb("output/frames_cobweb", orbit, blue, gold);
     
     int ITERATIONS = 300;
-    OrbitAnimator(800, 750)
+    OrbitAnimator(800, 800)
         .set_background_color(black)
         .set_diagonal_color(gray)
         .set_function_color(white)
@@ -67,7 +67,7 @@ int main() {
         .set_iterations(ITERATIONS)
         .run_cobweb_sweep_initial_point(0.0, 1.0, 1200, "output/frame_cobweb_sweep_initial_point");
 
-    OrbitAnimator(800, 800)
+    OrbitAnimator(800, 50)
         .set_background_color(black)
         .set_web_colors(blue, gold)
         .set_map_factory(make_logistic_map)
