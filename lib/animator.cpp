@@ -68,6 +68,37 @@ void OrbitAnimator::run_cobweb_sweep(double r_start, double r_end, int total_fra
     std::cout << "\nAnimation Complete." << std::endl;
 }
 
+void OrbitAnimator::run_cobweb_sweep_initial_point(double r, int total_frames, const std::string& output_folder) {
+    std::cout << "Starting Initial Point Sweep (r=" << r << ") in: " << output_folder << std::endl;
+    std::string cmd = "mkdir -p " + output_folder;
+    system(cmd.c_str());
+
+    auto map_func = mapFactory(r);
+
+    for (int i = 0; i < total_frames; ++i) {
+        double t = static_cast<double>(i) / (total_frames - 1);
+        double current_x0 = t;
+
+        auto orbit = get_orbit(map_func, current_x0, iterations);
+
+        std::stringstream ss;
+        ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
+
+        PlotCanvas(width, height)
+            .fill_background(bgColor)
+            .draw_diagonal(diagColor)
+            .draw_function(map_func, funcColor)
+            .trace_cobweb(orbit, webStart, webEnd)
+            .save(ss.str());
+
+        if (i % 10 == 0) {
+            int pct = (i * 100) / total_frames;
+            std::cout << "Rendering: " << pct << "% (x0=" << current_x0 << ")\r" << std::flush;
+        }
+    }
+    std::cout << "\nInitial Point Sweep Complete." << std::endl;
+}
+
 void OrbitAnimator::run_strip_sweep(double r_start, double r_end, int total_frames, const std::string& output_folder) {
     std::cout << "Starting Strip Sweep Animation in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;
