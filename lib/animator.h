@@ -13,6 +13,7 @@ private:
     int height;
     int iterations = 100;
     double x0 = 0.1;
+    double r0 = 1.1;
 
     MapFactory mapFactory = [](double r) { 
         return [r](double x) { return r * x * (1.0 - x); };
@@ -29,6 +30,7 @@ public:
 
     OrbitAnimator& set_iterations(int iter);
     OrbitAnimator& set_start_x(double x);
+    OrbitAnimator& set_start_r(double r);
     OrbitAnimator& set_map_factory(MapFactory factory);
 
     OrbitAnimator& set_background_color(const Color& c);
@@ -38,7 +40,7 @@ public:
 
     void run_cobweb_sweep_parameter(double r_start, double r_end, int total_frames, const std::string& output_folder);
 
-    void run_cobweb_sweep_initial_point(double r, int total_frames, const std::string& output_folder);
+    void run_cobweb_sweep_initial_point(double x_start, double x_end, int total_frames, const std::string& output_folder);
 
     void run_strip_sweep_parameter(double r_start, double r_end, int total_frames, const std::string& output_folder);
 
