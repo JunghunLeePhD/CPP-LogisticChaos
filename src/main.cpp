@@ -32,7 +32,7 @@ int main() {
         .animate_cobweb("output/frames_cobweb", orbit, blue, gold);
     
     int ITERATIONS = 300;
-    OrbitAnimator(800, 800)
+    OrbitAnimator(800, 750)
         .set_background_color(black)
         .set_diagonal_color(gray)
         .set_function_color(white)
@@ -42,7 +42,7 @@ int main() {
         .set_iterations(ITERATIONS)
         .run_cobweb_sweep(1.0, 4.0, 1200, "output/frames_cobweb_sweep");
 
-    OrbitAnimator(800, 800)
+    OrbitAnimator(800, 50)
         .set_background_color(black)
         .set_diagonal_color(gray)
         .set_web_colors(blue, gold)
