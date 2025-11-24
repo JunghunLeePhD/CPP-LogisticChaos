@@ -1,12 +1,19 @@
 #ifndef LOGISTIC_H
 #define LOGISTIC_H
 
-#include <vector>
+#include <algorithm> 
+#include <cmath>     
 
-inline auto make_logistic_map(double r) {
-    return [r](double x) { 
-        return r * x * (1.0 - x); 
-    };
+struct LogisticMap {
+    double r;
+
+    [[nodiscard]] double operator()(double x) const {
+        return r * x * (1.0 - x);
+    }
+};
+
+[[nodiscard]] inline auto make_logistic_map(double r) {
+    return LogisticMap{r};
 }
 
 #endif
