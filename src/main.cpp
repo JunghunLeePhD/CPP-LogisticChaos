@@ -63,8 +63,9 @@ int main() {
         .set_background_color(black)
         .set_web_colors(blue, gold)
         .set_map_factory(make_logistic_map)
+        .set_start_r(3.2)
         .set_iterations(ITERATIONS)
-        .run_cobweb_sweep_initial_point(3.2, 1200, "output/frame_cobweb_sweep_initial_point");
+        .run_cobweb_sweep_initial_point(0.0, 1.0, 1200, "output/frame_cobweb_sweep_initial_point");
 
 
     std::cout << "All tasks completed. \nTo create the video, run:" << std::endl;

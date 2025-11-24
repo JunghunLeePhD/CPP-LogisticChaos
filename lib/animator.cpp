@@ -17,6 +17,11 @@ OrbitAnimator& OrbitAnimator::set_start_x(double x) {
     return *this;
 }
 
+OrbitAnimator& OrbitAnimator::set_start_r(double r) {
+    r0 = r;
+    return *this;
+}
+
 OrbitAnimator& OrbitAnimator::set_map_factory(MapFactory factory) {
     mapFactory = factory;
     return *this;
@@ -68,18 +73,18 @@ void OrbitAnimator::run_cobweb_sweep_parameter(double r_start, double r_end, int
     std::cout << "\nAnimation Complete." << std::endl;
 }
 
-void OrbitAnimator::run_cobweb_sweep_initial_point(double r, int total_frames, const std::string& output_folder) {
-    std::cout << "Starting Initial Point Sweep (r=" << r << ") in: " << output_folder << std::endl;
+void OrbitAnimator::run_cobweb_sweep_initial_point(double x_start, double x_end, int total_frames, const std::string& output_folder) {
+    std::cout << "Starting Initial Point Sweep (r=" << r0 << ") in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;
     system(cmd.c_str());
 
-    auto map_func = mapFactory(r);
+    auto map_func = mapFactory(r0);
 
     for (int i = 0; i < total_frames; ++i) {
         double t = static_cast<double>(i) / (total_frames - 1);
-        double current_x0 = t;
+        double x = x_start + t * (x_end - x_start);
 
-        auto orbit = get_orbit(map_func, current_x0, iterations);
+        auto orbit = get_orbit(map_func, x, iterations);
 
         std::stringstream ss;
         ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
@@ -93,7 +98,7 @@ void OrbitAnimator::run_cobweb_sweep_initial_point(double r, int total_frames, c
 
         if (i % 10 == 0) {
             int pct = (i * 100) / total_frames;
-            std::cout << "Rendering: " << pct << "% (x0=" << current_x0 << ")\r" << std::flush;
+            std::cout << "Rendering: " << pct << "% (x0=" << x << ")\r" << std::flush;
         }
     }
     std::cout << "\nInitial Point Sweep Complete." << std::endl;
