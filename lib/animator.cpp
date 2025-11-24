@@ -133,6 +133,35 @@ void OrbitAnimator::run_strip_sweep_parameter(double r_start, double r_end, int 
     std::cout << "\nStrip Animation Complete." << std::endl;
 }
 
+void OrbitAnimator::run_strip_sweep_initial_point(double x_start, double x_end, int total_frames, const std::string& output_folder){
+    std::cout << "Starting Strip Initial Point Sweep (r=" << r0 << ") in: " << output_folder << std::endl;
+    std::string cmd = "mkdir -p " + output_folder;
+    system(cmd.c_str());
+
+    for (int i = 0; i < total_frames; ++i) {
+        double t = static_cast<double>(i) / (total_frames - 1);
+        double x = x_start + t * (x_end - x_start);
+
+        auto map_func = mapFactory(r0);
+        auto orbit = get_orbit(map_func, x, iterations);
+
+        std::stringstream ss;
+        ss << output_folder << "/frame_" << std::setfill('0') << std::setw(4) << i << ".ppm";
+
+        PlotCanvas(width, height)
+            .fill_background(bgColor)
+            .draw_baseline(height / 2, diagColor) 
+            .draw_strip(orbit, webStart, webEnd)
+            .save(ss.str());
+
+        if (i % 10 == 0) {
+            int pct = (i * 100) / total_frames;
+            std::cout << "Rendering: " << pct << "% (x0=" << x << ")\r" << std::flush;
+        }
+    }
+    std::cout << "\nStrip Initial Point Sweep Complete." << std::endl;
+};
+
 void OrbitAnimator::run_bifurcation_growth(double r_start, double r_end, int total_frames, const std::string& output_folder) {
     std::cout << "Starting Bifurcation Growth in: " << output_folder << std::endl;
     std::string cmd = "mkdir -p " + output_folder;

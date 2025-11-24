@@ -67,6 +67,13 @@ int main() {
         .set_iterations(ITERATIONS)
         .run_cobweb_sweep_initial_point(0.0, 1.0, 1200, "output/frame_cobweb_sweep_initial_point");
 
+    OrbitAnimator(800, 800)
+        .set_background_color(black)
+        .set_web_colors(blue, gold)
+        .set_map_factory(make_logistic_map)
+        .set_start_r(3.2)
+        .set_iterations(ITERATIONS)
+        .run_strip_sweep_initial_point(0.0, 1.0, 1200, "output/frame_strip_sweep_initial_point");
 
     std::cout << "All tasks completed. \nTo create the video, run:" << std::endl;
     std::cout << "ffmpeg -framerate 10 -i output/frames_cobweb/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb.mp4" << std::endl;
@@ -75,6 +82,7 @@ int main() {
     std::cout << "ffmpeg -framerate 60 -i output/frames_strip_sweep_parameter/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/strip_sweep_parameter.mp4" << std::endl;
     std::cout << "ffmpeg -framerate 60 -i output/frames_bifurcation_growth/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/bifurcation_growth.mp4" << std::endl;
     std::cout << "ffmpeg -framerate 60 -i output/frame_cobweb_sweep_initial_point/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/cobweb_sweep_initial_point.mp4" << std::endl;
+    std::cout << "ffmpeg -framerate 60 -i output/frame_strip_sweep_initial_point/frame_%04d.ppm -c:v libx264 -pix_fmt yuv420p output/strip_sweep_initial_point.mp4" << std::endl;
 
     return 0;
 }

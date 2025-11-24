@@ -44,6 +44,8 @@ public:
 
     void run_strip_sweep_parameter(double r_start, double r_end, int total_frames, const std::string& output_folder);
 
+    void run_strip_sweep_initial_point(double x_start, double x_end, int total_frames, const std::string& output_folder);
+
     void run_bifurcation_growth(double r_start, double r_end, int total_frames, const std::string& output_folder);
 };
 
